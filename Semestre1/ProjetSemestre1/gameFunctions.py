@@ -1,32 +1,34 @@
-#!/usr/bin/env python
-# coding: utf-8
+'''
+Fichier contenant toutes les fonctions nécessaires au fonctionnement du jeu
+'''
 
-# In[1]:
-
-from drawingFunctions import *
-from drawBottle import draw_bottle, test_sizes_bottle
-from drawSaloon import draw_saloon, draw_many_saloons
-
-from time import sleep
-from turtle import *
-
-hideturtle()
-tracer(False)
-colormode(255)
-
-height = 1080
-width = 1920
-
-screen = Screen()
-screen.setup(width, height)
-
-#Groupe 1 : Jaime Alba Pastor et Raphael Anjou
-
+#coding: utf-8
 from random import choice, randrange
+from drawBottle import *
+from bullet import shoot_bullet
 
 #Definition des fonctions
 
-def afficheQuilles(q,n):
+def draw_list_bottle(startCoordinates, quilles, drawingTurtle):
+	startCoordinates = [-575, 200]
+	x = startCoordinates[0]
+	y = startCoordinates[1]
+
+	for loop in range(len(quilles)):
+		if quilles[loop] == "|":
+			drawingTurtle.setheading(0)
+			draw_bottle(x, y, 1, drawingTurtle)
+
+		else:
+			drawingTurtle.setheading(0)
+			va(x, y, drawingTurtle)
+			draw_rectangle(90, 200, "red", drawingTurtle)
+
+		update()
+
+		x += 125
+
+def afficheQuilles(q, n, drawingTurtle):
     #q est la liste contenant les différentes lignes ([deb,fin])
     #n est le nombre de quilles de depart
     
@@ -48,12 +50,13 @@ def afficheQuilles(q,n):
     print("Voici les quilles, il y a",nbLignes,"lignes")
     print(quilles)
 
-    clear()
-    draw_list_bottle(quilles)
+    drawingTurtle.clear()
+
+    startCoordinates = [-575, 200]
+    draw_list_bottle(startCoordinates, quilles, drawingTurtle)
+
     update()
-    
-    return
- 
+   	
 def ordiJoue(q):
     #q est la liste contenant les différentes lignes ([deb,fin])
     
@@ -151,63 +154,3 @@ def compterQuilles(q):
         nbDeQuilles = L[1] - L[0] + 1
     
     return nbDeQuilles
-
-#        - MOTEUR DU JEU -
-
-def draw_list_bottle(quilles):
-    x = -575
-    y = -200
-
-    for loop in range(len(quilles)):
-        if quilles[loop] == "|":
-            setheading(0)
-            draw_bottle(x, y, 1)
-            update()
-
-        else:
-            setheading(0)
-            va(x, y)
-            draw_rectangle(90, 200, "red")
-            update()
-
-        x += 125
-
-nbInitial = randrange(4,10)                 #Tirer un nombre aléatoire de quilles
-nbDeQuilles = nbInitial
-
-quilles=[[0,nbInitial-1]]
-afficheQuilles(quilles, nbInitial)
-
-gagnant = False
-
-while not gagnant:                              #Tant qu'il n'y a pas de gagnant :
-    
-    #Faire jouer le joueur
-    choix = joueurJoue(quilles)
-    jouer(choix, quilles)
-        
-    nbDeQuilles = compterQuilles(quilles)            #Mettre à jour le nombre de quilles
-    
-    afficheQuilles(quilles, nbInitial)      #Afficher les quilles
-    
-    if nbDeQuilles == 0:                           #S'il n'y a plus de quilles : le joueur a gagné
-        print("Tu as gagné!")
-        sleep(5)    
-        gagnant = True
-    
-    else:
-        sleep(1)                                   #S'il reste des quilles :   
-        print("Le robot joue !!!!!")
-        jouer(ordiJoue(quilles),quilles)    #Faire jouer l'ordinateur
-        
-        nbDeQuilles = compterQuilles(quilles)        #Mettre à jour le nombre de quilles
-              
-        afficheQuilles(quilles, nbInitial)  #Afficher les quilles
-        
-        if nbDeQuilles == 0:                        #S'il n'y a plus d'allumettes, l'ordinateur a gagné                      
-            print("Tu as perdu!") 
-            sleep(5)
-            gagnant = True
-        
-        
-

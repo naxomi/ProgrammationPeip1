@@ -5,112 +5,250 @@ Fichier contenant toutes les fonctions permettant de dessiner des formes
 from turtle import *
 from math import sqrt, sin, radians
 
-def va(x, y):
-	up()
-	goto(x, y)
-	down()
-
-def draw_star(x, y, length, shapeColor=(200, 15, 30)):
-	va(x, y)
-	color(shapeColor)
-	begin_fill()
-
-	setheading(36)
-	for loop in range(5):
-		forward(length)
-		right(72)
-		forward(length)
-		left(144)
-
-	end_fill()
-
-def draw_oval(centerX, centerY, length, cornersize, shapeColor=(220, 220, 220)):
-	setheading(270)
-	color(shapeColor)
-	va(centerX - cornersize, centerY - length/2)
-	circle(cornersize, 180)
-	fd(length)
-	circle(cornersize, 180)
-	fd(length)
-
-def draw_rectangle(length, width, shapeColor):
-	color(shapeColor)
-	begin_fill()
-	for loop in range(2):
-		fd(length)
-		left(90)
-		fd(width)
-		left(90)
-	end_fill()
-
-def draw_triangle(length1, length2, length3, angle1, angle2, angle3, color):
-	begin_fill()
-	setheading(angle1)
-	fd(length1)
-	setheading(angle2)
-	fd(length2)
-	setheading(angle3)
-	fd(length3)
-	end_fill()
-
-def half_grid():
-	color("black")
-	up()
-	goto(0,-500)
-	down()
-	setheading(90)
-	fd(1000)
-	up()
-	setheading(0)
-
-	goto(-500,0)
-	down()
-	setheading(0)
-	fd(1000)
-	up()
-	setheading(0)
-
-def point_color(startColor, endColor="green"):
-	color(startColor)
-	dot(10)
-	color(endColor)
-	print(position())
-
-def draw_round_rectangle(x, y, width, height, cornersize, shapeColor):
-	va(x + cornersize, y)
-
-	color(shapeColor)
-
-	begin_fill()
-
-	for loop in range(2):
-		fd(width - 2*cornersize)
-		circle(cornersize, 90)
-		fd(height - 2*cornersize)
-		circle(cornersize, 90)
-
-	end_fill()
-
-def draw_rectangle_reversed_angle(shapeColor, signLength, signWidth, cornersize):
-	va(position()[0] + cornersize, position()[1])
-	color(shapeColor)
+def va(x, y, turtleDrawing):
+	'''
+	-----------
+	Description
+	-----------
+	This function is used to go from the actual position (A) of the turtle,
+	to a point B(x, y), without leaving a line on the canva.
 	
-	begin_fill()
+	----------
+	Parameters
+	----------
+	x : integer / float
+		Abscissa of the target.
+	y : integer / float
+		Ordinate of the target.
+	turtleDrawing : class 'turtle.Turtle'
+		The turtle going from point A to point B(x,y).
+		
+	-------
+	Returns
+	-------
+	None.
 
-	fd(signLength - 2*cornersize)
-	setheading(270)
-	circle(cornersize, -90)
-	setheading(90)
-	fd(signWidth - 2*cornersize)
-	setheading(0)
-	circle(cornersize, -90)
-	setheading(180)
-	fd(signLength - 2*cornersize)
-	setheading(90)
-	circle(cornersize, -90)
-	setheading(270)
-	fd(signWidth - 2*cornersize)
-	setheading(180)
-	circle(cornersize, -90)
+	'''
+	
+	turtleDrawing.up()
+	turtleDrawing.goto(x, y)
+	turtleDrawing.down()
 
-	end_fill()
+def draw_star(x, y, length, shapeColor, turtleDrawing):
+	'''
+	-----------
+	Description
+	-----------
+	Function used to make a specified turtle draw a star filled with a certain color.
+	
+	----------
+	Parameters
+	----------
+	x : integer / float
+		Abscissa of the point at the end of the first branch drawn.
+	y : integer / float
+		Ordinate of the point at the end of the first branch drawn.
+	length : integer / float
+		Length of one arm of the star.
+	shapeColor : string / tuple
+		Color used by the turtle to draw the star.
+	turtleDrawing : class 'turtle.Turtle'
+		Turtle used to draw the star.
+
+	-------
+	Returns
+	-------
+	None.
+	
+	'''
+
+	# --- Initialize the position and color of the turtle --- #
+	va(x, y, turtleDrawing)
+	turtleDrawing.color(shapeColor)
+
+	# --- Start drawing --- #
+	turtleDrawing.begin_fill()
+
+	turtleDrawing.setheading(36)
+	for loop in range(5):
+		turtleDrawing.forward(length)
+		turtleDrawing.right(72)
+		turtleDrawing.forward(length)
+		turtleDrawing.left(144)
+
+	turtleDrawing.end_fill()
+	# --- End drawing --- #
+
+def draw_oval(centerX, centerY, length, cornersize, shapeColor, turtleDrawing):
+	'''
+	-----------
+	Description
+	-----------
+	Function to make a specified turtle draw an oval in a certain color.
+	
+	----------
+	Parameters
+	----------
+	centerX : integer / float
+		Abscissa of the center of the oval.
+	centerY : integer / float
+		Ordinate of the center of the oval.
+	length : integer / float
+		Length of the straight part of the oval.
+	diameter : integer / float
+		Width of the oval determined as the diameter of the circle used to make the round part.
+	shapeColor : string / tuple
+		Color used by the turtle to draw the outline of the oval.
+	turtleDrawing : class 'turtle.Turtle'
+		Turtle used to draw the oval.
+		
+	-------
+	Returns
+	-------
+	None.
+	
+	'''
+	
+	# --- Initialize the position, orientation and color of the turtle --- #
+	turtleDrawing.setheading(270)
+	turtleDrawing.color(shapeColor)
+	va(centerX - diameter, centerY - length/2, turtleDrawing)
+
+	# --- Start drawing --- #
+	turtleDrawing.circle(diameter, 180)
+	turtleDrawing.fd(length)
+	turtleDrawing.circle(diameter, 180)
+	turtleDrawing.fd(length)
+	# --- End drawing --- #
+
+def draw_rectangle(length, width, shapeColor, turtleDrawing):
+	'''
+	-----------
+	Description
+	-----------
+	Function to make a specified turtle draw a rectangle filled with a certain color.    
+
+	----------
+	Parameters
+	----------
+	length : integer / float
+		Lenght of the longest side the rectangle.
+	width : TYPE
+		Lenght of the shortest side the rectangle.
+	shapeColor : string / tuple
+		Color used by the turtle to fill the rectangle.
+	turtleDrawing : class 'turtle.Turtle'
+		Turtle used to draw the rectangle.
+
+	-------
+	Returns
+	-------
+	None.
+
+	'''
+	
+	# --- Initialize the color of the turtle --- #
+	turtleDrawing.color(shapeColor)
+
+	# --- Start drawing --- #
+	turtleDrawing.begin_fill()
+
+	for loop in range(2):
+		turtleDrawing.fd(length)
+		turtleDrawing.left(90)
+		turtleDrawing.fd(width)
+		turtleDrawing.left(90)
+
+	turtleDrawing.end_fill()
+	# --- End drawing --- #
+
+def draw_triangle(length1, length2, length3, angle1, angle2, angle3, color, turtleDrawing):
+
+	# --- Start drawing --- #
+	turtleDrawing.begin_fill()
+
+	turtleDrawing.setheading(angle1)
+	turtleDrawing.fd(length1)
+	turtleDrawing.setheading(angle2)
+	turtleDrawing.fd(length2)
+	turtleDrawing.setheading(angle3)
+	turtleDrawing.fd(length3)
+
+	turtleDrawing.end_fill()
+	# --- End drawing --- #
+
+def half_grid(turtleDrawing):
+
+	# --- Initialize the color of the turtle --- #
+	turtleDrawing.color("black")
+
+	# --- Start drawing --- #
+	turtleDrawing.up()
+	turtleDrawing.goto(0,-500)
+	turtleDrawing.down()
+	turtleDrawing.setheading(90)
+	turtleDrawing.fd(1000)
+	turtleDrawing.up()
+	turtleDrawing.setheading(0)
+
+	turtleDrawing.goto(-500,0)
+	turtleDrawing.down()
+	turtleDrawing.setheading(0)
+	turtleDrawing.fd(1000)
+	turtleDrawing.up()
+	turtleDrawing.setheading(0)
+	# --- End drawing --- #
+
+def point_color(startColor, endColor, turtleDrawing):
+
+	# --- Start drawing --- #
+	turtleDrawing.color(startColor)
+	turtleDrawing.dot(10)
+	turtleDrawing.color(endColor)
+	# --- End drawing --- #
+
+def draw_round_rectangle(x, y, width, height, cornersize, shapeColor, turtleDrawing):
+	
+	# --- Initialize the position and color of the turtle --- #
+	va(x + cornersize, y, turtleDrawing)
+	turtleDrawing.color(shapeColor)
+
+	# --- Start drawing --- #
+	turtleDrawing.begin_fill()
+
+	for loop in range(2):
+		turtleDrawing.fd(width - 2*cornersize)
+		turtleDrawing.circle(cornersize, 90)
+		turtleDrawing.fd(height - 2*cornersize)
+		turtleDrawing.circle(cornersize, 90)
+
+	turtleDrawing.end_fill()
+	# --- End drawing --- #
+
+def draw_rectangle_reversed_angle(shapeColor, signLength, signWidth, cornersize, turtleDrawing):
+
+	# --- Initialize the position and color of the turtle --- #
+	va(turtleDrawing.position()[0] + cornersize, turtleDrawing.position()[1], turtleDrawing)
+	turtleDrawing.color(shapeColor)
+	
+	# --- Start drawing --- #
+	turtleDrawing.begin_fill()
+
+	turtleDrawing.fd(signLength - 2*cornersize)
+	turtleDrawing.setheading(270)
+	turtleDrawing.circle(cornersize, -90)
+	turtleDrawing.setheading(90)
+	turtleDrawing.fd(signWidth - 2*cornersize)
+	turtleDrawing.setheading(0)
+	turtleDrawing.circle(cornersize, -90)
+	turtleDrawing.setheading(180)
+	turtleDrawing.fd(signLength - 2*cornersize)
+	turtleDrawing.setheading(90)
+	turtleDrawing.circle(cornersize, -90)
+	turtleDrawing.setheading(270)
+	turtleDrawing.fd(signWidth - 2*cornersize)
+	turtleDrawing.setheading(180)
+	turtleDrawing.circle(cornersize, -90)
+
+	turtleDrawing.end_fill()
+	# --- End drawing --- #

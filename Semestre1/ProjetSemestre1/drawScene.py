@@ -4,7 +4,7 @@ Fichier test du jeu, celui pour test le bon affichage des dessins etc...
 
 from drawingFunctions import *
 from bullet import shoot_bullet
-from drawBottle import draw_bottle, test_sizes_bottle
+from drawBottle import draw_bottle, test_sizes_bottle, draw_broken_bottle, test_sizes_broken_bottle
 from drawSaloon import draw_saloon, draw_many_saloons
 
 from turtle import *
@@ -55,29 +55,39 @@ screenFactor = 1 #Ceci sera le facteur choisit pour que le jeu soit responsive. 
 
 #########################
 
-saloonTurtle = Turtle()
-saloonTurtle.hideturtle()
-saloonTurtle.tracer(False)
-draw_saloon(-700, -250, 1.25, saloonTurtle)
+# saloonTurtle = Turtle()
+# saloonTurtle.hideturtle()
+# saloonTurtle.tracer(False)
+# draw_saloon(-700, -250, 1.25, saloonTurtle)
 #draw_many_saloons(saloonTurtle)
 
 #########################
 
-bancTurtle = Turtle()
-bancTurtle.hideturtle()
-bancTurtle.tracer(False)
-va(-160, -175, bancTurtle)
-lengthTable = 850
-draw_rectangle(lengthTable, 25, "brown", bancTurtle)
+# bancTurtle = Turtle()
+# bancTurtle.hideturtle()
+# bancTurtle.tracer(False)
+# va(-160, -175, bancTurtle)
+# lengthTable = 850
+# draw_rectangle(lengthTable, 25, "brown", bancTurtle)
 
 #########################
 
-bottleTurtle = Turtle()
-bottleTurtle.hideturtle()
-bottleTurtle.tracer(False)
-#draw_bottle(0, -150, 0.6, bottleTurtle)
+# bottleTurtle = Turtle()
+# bottleTurtle.hideturtle()
+# bottleTurtle.tracer(False)
+# #draw_bottle(0, -150, 0.6, bottleTurtle)
 
-#test_sizes_bottle(bottleTurtle)
+# test_sizes_bottle(bottleTurtle)
+
+#########################
+
+brokenBottleTurtle = Turtle()
+brokenBottleTurtle.hideturtle()
+brokenBottleTurtle.tracer(False)
+#draw_bottle(0, -150, 0.6, bottleTurtle)
+#draw_broken_bottle(0, -150, 1, brokenBottleTurtle)
+
+test_sizes_broken_bottle(brokenBottleTurtle)
 
 #########################
 
@@ -94,23 +104,23 @@ bottleTurtle.tracer(False)
 #FONCTION TRES IMPORTANTE !!!!!!!
 #PERMET DE CREER LES QUILLES DE FACON ORGANISE PEUT IMPORTE LE NOMBRE
 
-x = -160
-y = -150
+# x = -160
+# y = -150
 
-numberOfBottle = 15
-factor = 1
+# numberOfBottle = 15
+# factor = 1
 
-widthBottleOriginal = 90 * factor
-factorSizeBottle = 0.8 - (numberOfBottle-5)*0.03
+# widthBottleOriginal = 90 * factor
+# factorSizeBottle = 0.8 - (numberOfBottle-5)*0.03
 
-widthBottleModified = widthBottleOriginal * factorSizeBottle
-intervalBetweenBottle = (lengthTable - widthBottleModified * numberOfBottle) / (numberOfBottle + 1)
+# widthBottleModified = widthBottleOriginal * factorSizeBottle
+# intervalBetweenBottle = (lengthTable - widthBottleModified * numberOfBottle) / (numberOfBottle + 1)
 
-x += intervalBetweenBottle
+# x += intervalBetweenBottle
 
-for loop in range(numberOfBottle):
-	draw_bottle(x, y, factorSizeBottle, bottleTurtle)
-	x += intervalBetweenBottle + widthBottleModified
+# for loop in range(numberOfBottle):
+# 	draw_bottle(x, y, factorSizeBottle, bottleTurtle)
+# 	x += intervalBetweenBottle + widthBottleModified
 
 #########################
 #########################

@@ -79,7 +79,7 @@ def draw_star(x, y, length, shapeColor, turtleDrawing):
 	turtleDrawing.end_fill()
 	# --- End drawing --- #
 
-def draw_oval(centerX, centerY, length, cornersize, shapeColor, turtleDrawing):
+def draw_oval(centerX, centerY, length, diameter, shapeColor, turtleDrawing):
 	'''
 	-----------
 	Description

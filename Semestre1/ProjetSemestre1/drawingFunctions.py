@@ -29,40 +29,7 @@ def draw_star(x, y, length, shapeColor):
 	end_fill()
 	# --- End drawing --- #
 
-<<<<<<< Updated upstream
-def draw_oval(centerX, centerY, length, cornersize, shapeColor, turtleDrawing):
-	'''
-	-----------
-	Description
-	-----------
-	Function to make a specified turtle draw an oval in a certain color.
-	
-	----------
-	Parameters
-	----------
-	centerX : integer / float
-		Abscissa of the center of the oval.
-	centerY : integer / float
-		Ordinate of the center of the oval.
-	length : integer / float
-		Length of the straight part of the oval.
-	diameter : integer / float
-		Width of the oval determined as the diameter of the circle used to make the round part.
-	shapeColor : string / tuple
-		Color used by the turtle to draw the outline of the oval.
-	turtleDrawing : class 'turtle.Turtle'
-		Turtle used to draw the oval.
-		
-	-------
-	Returns
-	-------
-	None.
-	
-	'''
-	
-=======
 def draw_oval(centerX, centerY, length, cornersize, shapeColor):
->>>>>>> Stashed changes
 	# --- Initialize the position, orientation and color of the turtle --- #
 	setheading(270)
 	color(shapeColor)

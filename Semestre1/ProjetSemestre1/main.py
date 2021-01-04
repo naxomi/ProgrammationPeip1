@@ -1,72 +1,73 @@
-#!/usr/bin/env python
-# coding: utf-8
+#coding: utf-8
+'''
+Groupe 1 : Jaime Alba Pastor et Raphael Anjou
+'''
 
-# In[1]:
-
+# --- Imports --- #
 from drawingFunctions import *
-from drawBottle import draw_bottle, test_sizes_bottle
-from drawSaloon import draw_saloon, draw_many_saloons
+from drawScene import draw_background, draw_message
 from gameFunctions import *
 
-from random import choice, randrange
+from random import randrange
 from time import sleep
-from turtle import *
 
+# --- Initialize variables --- #
+lengthScreen = 1200
+heightScreen = 600
+factor = 1
+
+xForBench = -lengthScreen/20
+yForBench = -heightScreen/2.7
+lengthBench = 600 * factor
+
+# --- Initialize turtle modules --- #
 hideturtle()
-
-bottleTurtle = Turtle()
-
-bottleTurtle.hideturtle()
 tracer(False)
+title("Jeu de quilles fun et amusant !")
+setundobuffer(0)
+draw_background(lengthScreen, heightScreen, xForBench, yForBench, lengthBench, factor)
 
-colormode(255)
+# --- MOTEUR DU JEU --- #
 
-height = 1080
-width = 1920
-
-screen = Screen()
-screen.setup(width, height)
-
-#Groupe 1 : Jaime Alba Pastor et Raphael Anjou
-
-#        - MOTEUR DU JEU -
-
-nbInitial = randrange(4,10)                 #Tirer un nombre aléatoire de quilles
+nbInitial = randrange(5,6)                 #Tirer un nombre aléatoire de quilles
 nbDeQuilles = nbInitial
 
 quilles=[[0,nbInitial-1]]
-afficheQuilles(quilles, nbInitial, bottleTurtle)
+
+bottleAlreadyShot = []
+
+bottleAlreadyShot = afficheQuilles(quilles, nbInitial, xForBench, yForBench, lengthBench, bottleAlreadyShot, factor)
 
 gagnant = False
 
 while not gagnant:                              #Tant qu'il n'y a pas de gagnant :
     
     #Faire jouer le joueur
+    draw_message(lengthScreen, heightScreen, "C'est ton tour!")
     choix = joueurJoue(quilles)
     jouer(choix, quilles)
-        
-    nbDeQuilles = compterQuilles(quilles)            #Mettre à jour le nombre de quilles
     
-    afficheQuilles(quilles, nbInitial, bottleTurtle)      #Afficher les quilles
+    bottleAlreadyShot = afficheQuilles(quilles, nbInitial, xForBench, yForBench, lengthBench, bottleAlreadyShot, factor)      #Afficher les quilles
+    
+    nbDeQuilles = compterQuilles(quilles)            #Mettre à jour le nombre de quilles
+    #print("Il y a",nbDeQuilles,"quilles")
     
     if nbDeQuilles == 0:                           #S'il n'y a plus de quilles : le joueur a gagné
-        print("Tu as gagné!")
-        sleep(5)    
+        draw_message(lengthScreen, heightScreen, "Tu as gagné!")
         gagnant = True
     
     else:
-        sleep(1)                                   #S'il reste des quilles :   
-        print("Le robot joue !!!!!")
-        jouer(ordiJoue(quilles),quilles)    #Faire jouer l'ordinateur
+        draw_message(lengthScreen, heightScreen, "Le robot joue!")      #S'il reste des quilles : 
+        jouer(ordiJoue(quilles),quilles)                    #Faire jouer l'ordinateur
+
+        bottleAlreadyShot = afficheQuilles(quilles, nbInitial, xForBench, yForBench, lengthBench, bottleAlreadyShot, factor)  #Afficher les quilles
         
-        nbDeQuilles = compterQuilles(quilles)        #Mettre à jour le nombre de quilles
-              
-        afficheQuilles(quilles, nbInitial, bottleTurtle)  #Afficher les quilles
+        nbDeQuilles = compterQuilles(quilles)               #Mettre à jour le nombre de quilles
+        print("Il y a",nbDeQuilles,"quilles")
         
-        if nbDeQuilles == 0:                        #S'il n'y a plus d'allumettes, l'ordinateur a gagné                      
-            print("Tu as perdu!") 
-            sleep(3)
+        if nbDeQuilles == 0:                                #S'il n'y a plus d'allumettes, l'ordinateur a gagné                      
+            draw_message(lengthScreen, heightScreen, "Tu as perdu!") 
             gagnant = True
         
-        
+exitonclick()
 

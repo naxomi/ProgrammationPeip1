@@ -7,10 +7,21 @@ from turtle import *
 from math import atan, radians, degrees, ceil
 from time import sleep
 
-def draw_bullet(lengthBulletBody, widthBulletBody, countStep, factor, turtleDrawing):
+def draw_bullet(lengthBulletBody, widthBulletBody, turtleDrawing):
 	
 	# --- Draw the body of the bullet --- #
-	draw_rectangle(lengthBulletBody, widthBulletBody, (219, 176, 57), turtleDrawing)
+
+	#We can't use our rectangle function because we would need to specify the turtle drawing everywhere else
+	turtleDrawing.color(219, 176, 57)
+	turtleDrawing.begin_fill()
+
+	for loop in range(2):
+		turtleDrawing.fd(lengthBulletBody)
+		turtleDrawing.left(90)
+		turtleDrawing.fd(widthBulletBody)
+		turtleDrawing.left(90)
+
+	turtleDrawing.end_fill()
 
 	# --- Go to the top right corner of the bullet body (necessary to start drawing the head) --- #
 	turtleDrawing.up()
@@ -25,18 +36,22 @@ def draw_bullet(lengthBulletBody, widthBulletBody, countStep, factor, turtleDraw
 
 	# --- #
 	update()
+	tracer(0)
 
-def shoot_bullet(xStart, yStart, xDestination, yDestination, factor, turtleDrawing):
+def shoot_bullet(xStart, yStart, xDestination, yDestination, factor, factorSizeBottle, turtleDrawing):
 
 	# --- Initialize the size of the bullet --- #
-	lengthBulletBodyStart = 100
-	widthBulletBodyStart = 50
+	lengthBulletBodyStart = 100 * factor * factorSizeBottle
+	widthBulletBodyStart = 50 * factor * factorSizeBottle
 
 	# --- Go to the start of the trajectory, find the distance from the start to the target, calculate the distance needed to be traveled for each steps --- #
-	va(xStart, yStart, turtleDrawing)
-	waypoint = turtleDrawing.position()
+	turtleDrawing.up()
+	turtleDrawing.goto(xStart, yStart)
+	turtleDrawing.down()
+
+	waypoint = turtleDrawing.position() #Create a waypoint to remember the starting coordinates for each iteration of the bullet 
 	distanceToTarget = turtleDrawing.distance(xDestination, yDestination)
-	steps = 60
+	steps = 10
 	distancePerStep = distanceToTarget / steps
 
 	# --- Initialize the distance traveled and the number of steps traveled as well as the factor used to determine the size of the bullet --- #
@@ -45,7 +60,13 @@ def shoot_bullet(xStart, yStart, xDestination, yDestination, factor, turtleDrawi
 	sizeChanger = 1
 	
 	# --- While the bullet has not reached the target : --- #
-	while traveledDistance <= distanceToTarget:
+	while traveledDistance <= (distanceToTarget - lengthBulletBodyStart*steps*0.025):
+
+		# --- Place the turtle on the last waypoint --- #
+
+		turtleDrawing.up()
+		turtleDrawing.goto(waypoint[0], waypoint[1])
+		turtleDrawing.down()
 
 		# --- Update the length and width of the bullet --- #
 		lengthBulletBody = lengthBulletBodyStart * sizeChanger
@@ -61,21 +82,33 @@ def shoot_bullet(xStart, yStart, xDestination, yDestination, factor, turtleDrawi
 		turtleDrawing.fd(widthBulletBody / 2)
 		turtleDrawing.left(90)
 
-		# --- Draw the bullet and go back to the coordinates of the start of the drawing--- #
-		draw_bullet(lengthBulletBody, widthBulletBody, countStep, 1, turtleDrawing)
-		va(waypoint[0], waypoint[1], turtleDrawing)
+		# --- Draw the bullet and go back to the waypoint --- #
+
+		draw_bullet(lengthBulletBody, widthBulletBody, turtleDrawing)
+
+		turtleDrawing.up()
+		turtleDrawing.goto(waypoint[0], waypoint[1])
+		turtleDrawing.down()
 
 		# --- Orientate the turtle on the right direction and make a step closer to the target --- #
+		turtleDrawing.up()
+
 		turtleDrawing.setheading(direction)
 		turtleDrawing.fd(distancePerStep)
+	
+		turtleDrawing.down()
+
+		# --- Update the waypoint --- #
 		waypoint = turtleDrawing.position()
 
-		# --- Increment the distance traveled by the turtle and the number of steps taken. Reduce the size a little bit more since the turtle is going further away --- #
+		# --- Increment the distance traveled by the turtle and the number of steps taken. Reduce the size a little bit more because the turtle is going further away --- #
 		traveledDistance += distancePerStep
 		countStep += 1
-		sizeChanger -= 0.01
+		sizeChanger -= 0.025
 
 		# --- Update the screen and delete the previous iteration of the bullet --- #
 		update()
-		delay(50)
+		delay(25)
 		turtleDrawing.clear()
+
+	# --- #
